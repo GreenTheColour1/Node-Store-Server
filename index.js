@@ -8,7 +8,7 @@ async function main() {
   //routes
   const PORT = 5000;
 
-  app.use("/", (req, res) => {
+  app.get("/", (req, res) => {
     res.send("Server started");
   });
 
@@ -18,27 +18,34 @@ async function main() {
     useUnifiedTopology: true,
   });
 
-  await client.connect(() => {
-    console.log("database connected");
+  MongoClient.connect(process.env.DB_CONNECTION_STRING, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+  })
+    .then((client) => {
+      console.log("connected to database");
 
-    //connect the database the the object
-    const db = client.db("sample_mflix");
+      const db = client.db('sample_mflix')
 
-    //connect the collection to the object
-    const col = db.collection("movies");
+      //GET Request
+      app.get("/api/names", (req, res) => {
+        //connect the database the the object
+        const col = client.db("sample_mflix").collection('movies');
 
-    //finds the specified feilds in the collection
-    //SQL: SELECT title FROM movies
-    const cusor = col.find({}, {projection:{title:1, _id:0}});
-    cusor.on('data', data => console.log(data.title));
-  });
+        col.find({}, {projection: {_id:0, title:1}}).toArray()
+          .then(results => {
+            res.send(results);
+          }).catch(error => console.error(error));
+      });
 
-  //close the connection to the database
-  client.close();
+      //Other requests
+    })
+    .catch((error) => console.error(error));
 
   //start server
-  app.listen(PORT);
-  console.log(`Server started on port ${PORT}`);
+  app.listen(PORT, () => {
+    console.log(`Server started on port ${PORT}`);
+  });
 }
 
 main().catch(console.error);
