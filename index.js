@@ -1,8 +1,11 @@
 const express = require("express");
 const { MongoClient } = require("mongodb");
+const cors = require('cors');
 require("dotenv/config");
 
 const app = express();
+
+app.use(cors());
 
 async function main() {
   //routes
@@ -12,35 +15,31 @@ async function main() {
     res.send("Server started");
   });
 
-  //connect to DB
-  const client = new MongoClient(process.env.DB_CONNECTION_STRING, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  });
+  try{
+    const client = new MongoClient(process.env.DB_CONNECTION_STRING, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+  
+    await client.connect();
+  
+    console.log("connected to database");
 
-  MongoClient.connect(process.env.DB_CONNECTION_STRING, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-    .then((client) => {
-      console.log("connected to database");
+    const db = client.db('sample_restaurants')
 
-      const db = client.db('sample_restaurants')
+    //test GET request
+    app.get("/api/names", async (req, res) => {
+      //connect the database the the object
+      const col = db.collection('neighborhoods');
 
-      //GET Request
-      app.get("/api/names", (req, res) => {
-        //connect the database the the object
-        const col = db.collection('neighborhoods');
+      let results = await col.find({}, {projection: {_id:0, name:1}}).toArray();
 
-        col.find({}, {projection: {_id:0, name:1}}).toArray()
-          .then(results => {
-            res.send(results);
-          }).catch(error => console.error(error));
-      });
-
-      //Other requests
-    })
-    .catch((error) => console.error(error));
+      res.send(JSON.stringify(results));
+    });
+  }
+  catch(ex){
+    console.log(ex);
+  }
 
   //start server
   app.listen(PORT, () => {
