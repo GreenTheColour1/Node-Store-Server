@@ -25,14 +25,14 @@ async function main() {
     .then((client) => {
       console.log("connected to database");
 
-      const db = client.db('sample_mflix')
+      const db = client.db('sample_restaurants')
 
       //GET Request
       app.get("/api/names", (req, res) => {
         //connect the database the the object
-        const col = client.db("sample_mflix").collection('movies');
+        const col = db.collection('neighborhoods');
 
-        col.find({}, {projection: {_id:0, title:1}}).toArray()
+        col.find({}, {projection: {_id:0, name:1}}).toArray()
           .then(results => {
             res.send(results);
           }).catch(error => console.error(error));
