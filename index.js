@@ -22,7 +22,6 @@ async function main() {
     });
   
     await client.connect();
-  
     console.log("connected to database");
 
     const db = client.db('sample_restaurants')
@@ -34,7 +33,7 @@ async function main() {
 
       let results = await col.find({}, {projection: {_id:0, name:1}}).toArray();
 
-      res.send(JSON.stringify(results));
+      res.json(results);
     });
   }
   catch(ex){
