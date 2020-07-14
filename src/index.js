@@ -20,29 +20,6 @@ async function main() {
     res.send("Server started");
   });
 
-  try {
-    
-
-    await client.connect();
-    console.log("connected to database");
-
-    const db = client.db("shop");
-
-    //test GET request
-    app.get("/api/names", async (req, res) => {
-      //connect the database the the object
-      const col = db.collection("products");
-
-      let results = await col
-        .find({}, { projection: { _id: 0, ProductName: 1 } })
-        .toArray();
-
-      res.json(results);
-    });
-  } catch (ex) {
-    console.log(ex);
-  }
-
   //start server
   app.listen(PORT, () => {
     console.log(`Server started on http://localhost:${PORT}`);

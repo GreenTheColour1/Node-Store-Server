@@ -13,3 +13,5 @@ router.get("/api/names", async (req, res) => {
 
     res.json(results);
 });
+
+module.exports = router;
