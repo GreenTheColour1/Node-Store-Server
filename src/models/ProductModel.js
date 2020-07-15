@@ -24,7 +24,7 @@ const ProductSchema = new Schema({
         required: true
     },
     QtyOnHand: requiredNumber,
-    QtyOnBackorder: requiredNumber,
+    QtyOnBackOrder: requiredNumber,
     GraphicName: requiredString,
     Description: requiredString
 
