@@ -1,6 +1,10 @@
 const express = require('express');
 const Product = require("../models/ProductModel");
 
+/**
+ * This file implements all the routes of the 'api/products' route
+ */
+
 const router = express.Router();
 
 

@@ -8,6 +8,7 @@ const app = express();
 
 let main = async function () {
   // Connect to the database
+  //await the connection for the small chance the the user tries to query the db before the connection has been made
   await mongoose
     .connect(process.env.DB_CONNECTION_STRING, {
       useNewUrlParser: true,
@@ -18,17 +19,19 @@ let main = async function () {
       console.log(err);
     });
 
+  //add cors headers
   app.use(cors());
   //set up body parser
   app.use(express.json());
 
-  //port
   const PORT = 5000;
 
+  //home page
   app.get("/", (req, res) => {
     res.send("Server started");
   });
 
+  //products route
   app.use("/api/products", productRouter);
 
   //start server

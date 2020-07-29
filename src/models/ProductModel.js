@@ -1,6 +1,10 @@
 const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
+/**
+ * This file describes the layout of the product table in the database
+ */
+
 const requiredString = {
     type: String,
     required: true
@@ -35,5 +39,4 @@ const ProductSchema = new Schema({
 
 
 const Product = mongoose.model('Product', ProductSchema);
-
 module.exports = Product;
