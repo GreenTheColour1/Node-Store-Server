@@ -1,15 +1,15 @@
 const express = require("express");
-const mongoose = require("mongoose");
+const Mongoose = require("mongoose");
 const cors = require("cors");
 const productRouter = require("./routes/productApi");
 require("dotenv/config");
 
 const app = express();
 
-let main = async function () {
+let main = async () => {
   // Connect to the database
   //await the connection for the small chance the the user tries to query the db before the connection has been made
-  await mongoose
+  await Mongoose
     .connect(process.env.DB_CONNECTION_STRING, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
