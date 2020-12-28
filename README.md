@@ -1,6 +1,6 @@
 # Node-Store-Server
 
-This is an in-progress project that uses the express framework to create a web server and MongoDB for a database backend
+This is an in-progress project that uses the express framework to create a web server and MongoDB for a database backend. This is designed to be used with the react-client repository.
 
 ## Things that need to get done
 1. Expand database
