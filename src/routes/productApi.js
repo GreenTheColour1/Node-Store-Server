@@ -7,8 +7,13 @@ const Product = require("../models/ProductModel");
 
 const router = express.Router();
 
-//get all products
-router.get("/", async (req, res) => {
+router.get('/', async (req, res) => {
+  const results = await Product.find();
+  res.json(results);
+});
+
+//get all products with less fields
+router.get("/simple", async (req, res) => {
     
   const results = await Product.find().select({"_id": 0, "Brand": 1, "ProductName": 1, "GraphicName": 1, "Description": 1});
 
